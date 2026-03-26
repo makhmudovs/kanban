@@ -8,12 +8,15 @@ import { RoadmapCard } from "./RoadMapCard";
 import { EmptyState } from "./EmptyState";
 import { SortBar } from "./SortBar";
 import { FeedbackCard } from "./FeedbackCard";
-
+import Account from "./Account";
+import { authClient } from "../lib/auth-client";
 
 export type Category = "All" | "UI" | "UX" | "Enhancement" | "Bug" | "Feature";
-export type SortOption = "Most Upvotes" | "Least Upvotes" | "Most Comments" | "Least Comments";
-
-
+export type SortOption =
+  | "Most Upvotes"
+  | "Least Upvotes"
+  | "Most Comments"
+  | "Least Comments";
 
 export const initialFeedback = [
   {
@@ -74,7 +77,6 @@ export const initialFeedback = [
   },
 ];
 
-
 export default function FeedbackBoard() {
   const [feedback, setFeedback] = useState(initialFeedback);
   const [activeFilter, setActiveFilter] = useState<Category>("All");
@@ -84,12 +86,20 @@ export default function FeedbackBoard() {
   const toggleUpvote = (id: number) => {
     setFeedback((prev) =>
       prev.map((f) =>
-        f.id === id ? { ...f, upvoted: !f.upvoted, upvotes: f.upvoted ? f.upvotes - 1 : f.upvotes + 1 } : f
-      )
+        f.id === id
+          ? {
+              ...f,
+              upvoted: !f.upvoted,
+              upvotes: f.upvoted ? f.upvotes - 1 : f.upvotes + 1,
+            }
+          : f,
+      ),
     );
   };
 
-  const filtered = feedback.filter((f) => activeFilter === "All" || f.category === activeFilter);
+  const filtered = feedback.filter(
+    (f) => activeFilter === "All" || f.category === activeFilter,
+  );
 
   const sorted = [...filtered].sort((a, b) => {
     if (sort === "Most Upvotes") return b.upvotes - a.upvotes;
@@ -100,17 +110,26 @@ export default function FeedbackBoard() {
 
   return (
     <div className="min-h-screen bg-[#F2F4FF]">
-
       {/* ── MOBILE (< md) ───────────────────────────────────── */}
       <div className="md:hidden">
         {/* Mobile top nav */}
-        <div className="flex items-center justify-between px-6 py-5"
-          style={{ background: "linear-gradient(135deg, #28A7ED 0%, #A337F6 53%, #E84D70 100%)" }}>
+        <div
+          className="flex items-center justify-between px-6 py-5"
+          style={{
+            background:
+              "linear-gradient(135deg, #28A7ED 0%, #A337F6 53%, #E84D70 100%)",
+          }}
+        >
           <div>
             <h2 className="text-white font-bold text-base">Frontend Mentor</h2>
-            <p className="text-white/75 text-[13px] font-medium">Feedback Board</p>
+            <p className="text-white/75 text-[13px] font-medium">
+              Feedback Board
+            </p>
           </div>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white p-1">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-white p-1"
+          >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
@@ -118,9 +137,18 @@ export default function FeedbackBoard() {
         {/* Mobile slide-out overlay */}
         {mobileMenuOpen && (
           <>
-            <div className="fixed inset-0 bg-[#3A4374]/50 z-30" onClick={() => setMobileMenuOpen(false)} />
+            <div
+              className="fixed inset-0 bg-[#3A4374]/50 z-30"
+              onClick={() => setMobileMenuOpen(false)}
+            />
             <div className="fixed top-18 right-0 bottom-0 w-72 bg-[#F2F4FF] z-40 p-6 flex flex-col gap-4 overflow-y-auto">
-              <FilterCard active={activeFilter} onSelect={(c) => { setActiveFilter(c); setMobileMenuOpen(false); }} />
+              <FilterCard
+                active={activeFilter}
+                onSelect={(c) => {
+                  setActiveFilter(c);
+                  setMobileMenuOpen(false);
+                }}
+              />
               <RoadmapCard />
             </div>
           </>
@@ -128,7 +156,12 @@ export default function FeedbackBoard() {
 
         {/* Sort bar */}
         <div className="px-0">
-          <SortBar count={sorted.length} sort={sort} setSort={setSort} onAdd={() => {}} />
+          <SortBar
+            count={sorted.length}
+            sort={sort}
+            setSort={setSort}
+            onAdd={() => {}}
+          />
         </div>
 
         {/* Cards */}
@@ -137,7 +170,12 @@ export default function FeedbackBoard() {
             <EmptyState />
           ) : (
             sorted.map((item) => (
-              <FeedbackCard key={item.id} item={item} onUpvote={toggleUpvote} horizontal={false} />
+              <FeedbackCard
+                key={item.id}
+                item={item}
+                onUpvote={toggleUpvote}
+                horizontal={false}
+              />
             ))
           )}
         </div>
@@ -151,11 +189,20 @@ export default function FeedbackBoard() {
           <FilterCard active={activeFilter} onSelect={setActiveFilter} />
           <RoadmapCard />
         </div>
-        <SortBar count={sorted.length} sort={sort} setSort={setSort} onAdd={() => {}} />
+        <SortBar
+          count={sorted.length}
+          sort={sort}
+          setSort={setSort}
+          onAdd={() => {}}
+        />
         <div className="flex flex-col gap-4 mt-6">
-          {sorted.length === 0 ? <EmptyState /> : sorted.map((item) => (
-            <FeedbackCard key={item.id} item={item} onUpvote={toggleUpvote} />
-          ))}
+          {sorted.length === 0 ? (
+            <EmptyState />
+          ) : (
+            sorted.map((item) => (
+              <FeedbackCard key={item.id} item={item} onUpvote={toggleUpvote} />
+            ))
+          )}
         </div>
       </div>
 
@@ -170,15 +217,27 @@ export default function FeedbackBoard() {
 
         {/* Main content */}
         <main className="flex-1 flex flex-col gap-5">
-          <SortBar count={sorted.length} sort={sort} setSort={setSort} onAdd={() => {}} />
+          <SortBar
+            count={sorted.length}
+            sort={sort}
+            setSort={setSort}
+            onAdd={() => {}}
+          />
           <div className="flex flex-col gap-4">
-            {sorted.length === 0 ? <EmptyState /> : sorted.map((item) => (
-              <FeedbackCard key={item.id} item={item} onUpvote={toggleUpvote} />
-            ))}
+            {sorted.length === 0 ? (
+              <EmptyState />
+            ) : (
+              sorted.map((item) => (
+                <FeedbackCard
+                  key={item.id}
+                  item={item}
+                  onUpvote={toggleUpvote}
+                />
+              ))
+            )}
           </div>
         </main>
       </div>
     </div>
   );
 }
-
