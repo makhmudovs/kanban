@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "db:up": "docker compose up -d",
+    "db:build":"docker compose up -d --build",
     "db:generate": "pnpm drizzle-kit generate",
     "db:migrate": "pnpm drizzle-kit migrate",
     "db:push": "pnpm drizzle-kit push",

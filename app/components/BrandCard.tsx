@@ -1,7 +1,7 @@
 export function BrandCard() {
   return (
     <div
-      className="rounded-2xl p-6 flex flex-col justify-end h-full min-h-35 relative overflow-hidden"
+      className="rounded-2xl p-6 flex flex-col justify-end h-fit min-h-35 relative overflow-hidden"
       style={{
         background:
           "linear-gradient(135deg, #28A7ED 0%, #A337F6 53%, #E84D70 100%)",

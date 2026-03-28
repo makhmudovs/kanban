@@ -15,6 +15,11 @@ export default function RegisterPage() {
         <div className="flex justify-center">
           <AuthCard title="Register">
             <form action={formAction} className="space-y-6">
+              {state.message && (
+                <div className="p-4 mb-4 text-sm text-white bg-[#d73737] rounded-md font-bold">
+                  {state.message}
+                </div>
+              )}
               {/* Name Field */}
               <div className="space-y-3">
                 <label
@@ -78,12 +83,6 @@ export default function RegisterPage() {
 
               <div className="flex justify-end gap-4 mt-12 pt-4">
                 <button
-                  type="button"
-                  className="px-6 py-3 text-sm font-bold text-[#f2f4fe] bg-[#3a4374] rounded-md hover:opacity-90"
-                >
-                  Cancel
-                </button>
-                <button
                   disabled={pending}
                   type="submit"
                   className="px-6 py-3 text-sm font-bold text-[#f2f4fe] bg-linear-to-r from-[#ad1fea] via-[#d73737] to-[#f49f3f] rounded-md hover:opacity-90 disabled:opacity-50"
@@ -91,14 +90,16 @@ export default function RegisterPage() {
                   {pending ? "Creating..." : "Create Account"}
                 </button>
               </div>
-
-              {state.message && !state.errors && (
-                <p className="text-center text-sm font-bold text-green-600">
-                  {state.message}
-                </p>
-              )}
             </form>
-            {/* ... Login link */}
+            <div className="mt-12 text-center text-sm">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="font-bold text-[#4661e6] hover:underline"
+              >
+                Sign in
+              </Link>
+            </div>
           </AuthCard>
         </div>
       </div>
