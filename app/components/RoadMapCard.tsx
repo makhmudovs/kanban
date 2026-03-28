@@ -10,7 +10,7 @@ export function RoadmapCard() {
       <div className="flex justify-between items-center mb-5">
         <h3 className="font-bold text-[#3A4374] text-base">Roadmap</h3>
         <a
-          href="#"
+          href="/roadmap"
           className="text-[#4661E6] text-[13px] font-semibold underline underline-offset-1 hover:text-[#8397F8]"
         >
           View

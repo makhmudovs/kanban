@@ -19,6 +19,11 @@ const LoginPage: React.FC = () => {
         <div className="flex justify-center">
           <AuthCard title="Login">
             <form action={formAction} className="space-y-6">
+              {state.message && (
+                <div className="p-4 mb-4 text-sm text-white bg-[#d73737] rounded-md font-bold">
+                  {state.message}
+                </div>
+              )}
               {/* Field 1: Email */}
               <div className="space-y-3">
                 <label
@@ -66,33 +71,20 @@ const LoginPage: React.FC = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4 mt-12">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-12">
                 <Link
                   href="/forgot-password"
                   className="text-xs text-[#647196] hover:underline"
                 >
                   Forgot password?
                 </Link>
-                {/* Secondary 'Cancel' button style */}
-                <button
-                  type="button"
-                  className="px-6 py-3 text-sm font-bold text-[#f2f4fe] bg-[#3a4374] rounded-md hover:opacity-90 transition w-full sm:w-auto"
-                >
-                  Cancel
-                </button>
-                {/* Primary 'Add Feedback' gradient button style */}
                 <button
                   type="submit"
                   className="px-6 py-3 text-sm font-bold text-[#f2f4fe] bg-linear-to-r from-[#ad1fea] via-[#d73737] to-[#f49f3f] rounded-md hover:opacity-90 transition w-full sm:w-auto"
                 >
-                  Login
+                  {pending ? "Signing in" : "Sign in"}
                 </button>
               </div>
-              {state.message && !state.errors && (
-                <p className="text-center text-sm font-bold text-green-600">
-                  {state.message}
-                </p>
-              )}
             </form>
 
             <div className="mt-12 text-center text-sm">

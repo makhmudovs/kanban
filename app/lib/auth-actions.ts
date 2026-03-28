@@ -1,10 +1,24 @@
-'use server';
+"use server";
 
 import { z } from "zod";
 import { auth } from "./auth";
 import { loginUserSchema, registerUserSchema } from "./schemas";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { getErrorMessage } from "../utils/errors";
+
+export async function validateUser() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    auth.api.signOut();
+    redirect("/login");
+  }
+
+  return session.user.id;
+}
 
 export type RegisterState = {
   errors?: {
@@ -41,14 +55,11 @@ export async function SignUp(
       body: { name, email, password },
     });
     // Don't redirect inside the try block!
-  } catch (error: any) {
+  } catch (error: unknown) {
     // 1. Log the error for your own debugging
     console.error("Auth Error:", error);
 
-    // 2. Map specific Better-Auth errors to user-friendly messages
-    // Better-Auth usually sends back a code or a message
-    const errorMessage =
-      error.body?.message || error.message || "Something went wrong";
+    const errorMessage = getErrorMessage(error);
 
     if (errorMessage.toLowerCase().includes("invalid")) {
       return { message: "Invalid email or password.", errors: {} };
@@ -98,14 +109,11 @@ export async function SignIn(
       headers: await headers(),
     });
     // Don't redirect inside the try block!
-  } catch (error: any) {
+  } catch (error: unknown) {
     // 1. Log the error for your own debugging
     console.error("Auth Error:", error);
 
-    // 2. Map specific Better-Auth errors to user-friendly messages
-    // Better-Auth usually sends back a code or a message
-    const errorMessage =
-      error.body?.message || error.message || "Something went wrong";
+    const errorMessage = getErrorMessage(error);
 
     if (errorMessage.toLowerCase().includes("invalid")) {
       return { message: "Invalid email or password.", errors: {} };
@@ -115,7 +123,7 @@ export async function SignIn(
       message: "An unexpected error occurred. Please try again.",
       errors: {},
     };
-  } finally {
-    redirect("/");
   }
+
+  redirect("/");
 }

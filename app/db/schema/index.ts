@@ -4,4 +4,6 @@ export * from "./user";
 export * from "./session";
 export * from "./account";
 export * from "./verification";
+export * from './feedback';
+export * from './comment';
 export { userRelations, sessionRelations, accountRelations }; // Clean export
