@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1777454639094,
+      "tag": "0000_uneven_chimera",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777710791979,
+      "tag": "0001_wise_havok",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777711036732,
+      "tag": "0002_aberrant_fantastic_four",
+      "breakpoints": true
+    }
+  ]
+}
